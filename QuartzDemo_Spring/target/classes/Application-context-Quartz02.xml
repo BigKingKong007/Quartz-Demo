@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+<!--
+1、创建方法对象
+2、创建Detail-MethodInvokingJobDetailFactoryBean
+3、创建SimpleTriggerJobFactoryBean
+4、创建Scheduler
+-->
+    <!--1、定时方法对象-->
+    <bean id="myQuartz01" class="com.itqf.Job.MyQuartz01"></bean>
+    <!--2、创建Detail-->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="name" value="MyJobDetail02"/>
+        <property name="group" value="MyGroup02"/>
+        <property name="targetObject" ref="myQuartz01"/>
+        <property name="targetMethod" value="hahah"/>
+    </bean>
+    <!--3、创建SimpleTriggerFactoryBean-->
+    <bean id="simpleTrigger02" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="name" value="Trigger02"/>
+        <property name="group" value="TriggerGroup02"/>
+        <property name="jobDetail" ref="jobDetail"/>
+        <property name="startDelay" value="5000"/>
+        <property name="repeatInterval" value="3000"/>
+     </bean>
+    <!--4、创建Scheduler对象-->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <array>
+                <ref bean="simpleTrigger02"></ref>
+            </array>
+        </property>
+    </bean>
+
+
+
+
+</beans>

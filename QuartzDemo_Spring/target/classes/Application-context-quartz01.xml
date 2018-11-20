@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--1、JobDetail
+        jobdetail:类型是class类型
+    -->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.itqf.Job.Myjob"></property>
+        <property name="durability" value="true"></property>
+        <property name="name" value="Myjob1"></property>
+        <property name="group" value="Mugroup1"></property>
+    </bean>
+
+    <!--触发器
+        SimpleTriger
+        CronTrigger
+    -->
+    <bean  id="MyCornTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="name" value="MyTriGGER"></property>
+        <property name="group" value="MyTrigger"/>
+        <property name="jobDetail" ref="jobDetail"/>
+        <property name="cronExpression" value="0/5 * * * * * ?"/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <array>
+                <ref bean="MyCornTrigger"></ref>
+            </array>
+        </property>
+    </bean>
+</beans>
